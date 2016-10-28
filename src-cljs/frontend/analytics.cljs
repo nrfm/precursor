@@ -4,7 +4,8 @@
             [frontend.state :as state]
             [frontend.utils :as utils :include-macros true]))
 
-(defn init-user [cust]
+(defn init-user [c])
+#_(defn init-user [cust]
   (utils/swallow-errors
    (rollbar/init (str (:cust/uuid cust)) (:cust/email cust)))
   (utils/swallow-errors
@@ -13,22 +14,27 @@
    (mixpanel/set-people-props {:$email (:cust/email cust)
                                :$last_login (js/Date.)})))
 
-(defn init-ab-tests [choices]
+(defn init-ab-tests [c])
+#_(defn init-ab-tests [choices]
   (utils/swallow-errors
    (mixpanel/register-once choices)))
 
-(defn init [state]
+(defn init [s])
+#_(defn init [state]
   (init-ab-tests (:ab-choices state))
   (when-let [cust (:cust state)]
     (init-user cust)))
 
-(defn track-path [path]
+(defn track-path [p])
+#_(defn track-path [path]
   (mixpanel/track-pageview path))
 
-(defn track-page [page & [props]]
+(defn track-page [p & ps])
+#_(defn track-page [page & [props]]
   (mixpanel/track page props))
 
-(defn track [page & [props]]
+(defn track [p & ps])
+#_(defn track [page & [props]]
   (mixpanel/track page props))
 
 (def controls-blacklist #{:chat-db-updated
@@ -54,7 +60,8 @@
                           :make-button-hovered
                           :db-document-name-changed})
 
-(defn track-control [event data state]
+(defn track-control [e d s])
+#_(defn track-control [event data state]
   (when-not (contains? controls-blacklist event)
     (mixpanel/track (str event) (merge
                                  (:analytics-data data)
@@ -65,7 +72,8 @@
                                     :subscriber-count (count (get-in state [:subscribers :info]))})))
     (mixpanel/set-people-props {(str event) true})))
 
-(defn track-nav [event data state]
+(defn track-nav [e d s])
+#_(defn track-nav [event data state]
   (mixpanel/track (str "Navigated to " event) (merge
                                                (:analytics-data data)
                                                (dissoc (get-in state state/browser-settings-path) :document-settings)

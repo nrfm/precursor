@@ -232,5 +232,19 @@
         :let [k (if (keyword? k) k (:k k))]]
   (intern *ns* (symbol (name k)) (fn [] (get-secret k))))
 
+(defn load-dev-secrets []
+  (let [source "secrets/my-secrets-file.edn"
+        file (io/resource source)
+        ]
+    (-> source
+        io/resource
+        slurp
+        edn/read-string
+        (->>
+         ;; see how far we can get with as few secrets as possible
+         ;;(safe-validate ProfileSchema)
+         (reset! secrets-atom)))))
+
 (defn init []
-  (load-secrets nil))
+  #_(load-secrets nil)
+  (load-dev-secrets))

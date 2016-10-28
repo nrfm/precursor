@@ -76,7 +76,8 @@
 (def base-url "https://api.stripe.com/v1/")
 
 (defn api-call [method endpoint & [params]]
-  (-> (http/request (merge {:method method
+  (log/info "Stripe call stubbed out: " method endpoint params)
+  #_(-> (http/request (merge {:method method
                             :url (str base-url endpoint)
                             :basic-auth [(profile/stripe-secret-key) ""]}
                            params))
@@ -174,6 +175,9 @@
   (ensure-ph-coupon)
   (ensure-dn-coupon))
 
-(defn init []
+#_(defn init []
   (ensure-plans)
-  (ensure-coupons))
+    (ensure-coupons))
+
+(defn init []
+  (log/info "NOT initializing stripe"))

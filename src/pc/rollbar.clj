@@ -31,7 +31,8 @@
                                                  (.printStackTrace e)))))
 
 (defn send-payload* [_ payload]
-  (clj-http/post endpoint
+  (log/info "NOT sending rollbard payload" #_payload)
+  #_(clj-http/post endpoint
                  {:body payload
                   :content-type :json
                   :socket-timeout 30000 ; 30s

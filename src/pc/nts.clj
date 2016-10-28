@@ -30,7 +30,10 @@
   (let [new-token (fetch-token)]
     (reset! token new-token)))
 
-(defn init []
+#_(defn init []
   (log/infof "retrieving ice servers from Twilio")
   (reset! token (fetch-token))
   (pc.utils/safe-schedule {:minute [2]} #'replace-token))
+
+(defn init []
+  (log/infof "NOT retrieving ice servers from Twilio"))

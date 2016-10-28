@@ -187,7 +187,7 @@
                    :metadata {:content-type "image/svg+xml"})))
 
 (defn add-default-clips [conn]
-  (ensure-default-clip-in-s3)
+  ;;(ensure-default-clip-in-s3)
   (let [db (d/db conn)]
     (doseq [cust-group (partition-all 200 (cust-model/all db))]
       @(d/transact-async conn (conj (map (fn [cust]

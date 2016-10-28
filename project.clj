@@ -110,6 +110,9 @@
 
                  ;; dependencies of dependencies (make lein pedantic happy)
                  [commons-logging "1.2"]
+
+                 ;; java less compiler
+                 [org.lesscss/lesscss "1.7.0.1.1"]
                  ]
 
   :repositories ^:replace [["prcrsr-s3-releases" {:url "s3p://prcrsr-jars/releases"

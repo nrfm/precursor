@@ -47,7 +47,7 @@
   (clj-time.format/unparse (clj-time.format/formatters :hour-minute-second) datetime))
 
 (defn api-call* [_ uri data]
-  (let [resp (http/post (str endpoint uri) {:query-params {:data (encode data)
+  #_(let [resp (http/post (str endpoint uri) {:query-params {:data (encode data)
                                                            :verbose 1}})
         success? (-> resp :body json/decode (get "status") (= 1))]
     (when (or (-> resp :status (not= 200)) (not success?))

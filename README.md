@@ -1,3 +1,33 @@
+# Fork to run locally and peruse through
+I want to read through how Precursor does its DataScript/Datomic setup. But I had difficulties running the app locally. This fork has some changes to make it run locally.
+
+Run once to setup the fork of Om:
+```
+git submodule update --init
+```
+Run everytime:
+Run cljs through Figwheel:
+```
+lein figwheel dev
+```
+Run app:
+```
+lein run
+```
+App runs at: [http://localhost:8080](http://localhost:8080)
+
+Changes:
+ - Settings are in "resource/secrets/my-secrets-file.edn" without using encryption
+ - Datomic uses the in memory version, no need to setup a transactor
+ - Less/Css compilation done with a Java compiler, no need for npm
+ - Disabled (most?) mixpanel analytics reporting
+ - Disabled rollbar exception reporting
+ - No requests to Twillio or Stripe
+
+This works on my machine and perhaps will work on yours.
+
+Original README follows.
+
 ## The Pitch
 
 [Precursor](https://precursorapp.com) is the best way to collaborate on early prototypes with your team. Start every project with a new Precursor doc, share the link with your team, hit the speaker in the lower right to share your audio, and start sketching out your ideas. It's better than Sketch, Skype, and Slack put together.

@@ -12,7 +12,9 @@
            [java.io Reader File BufferedReader InputStreamReader]
            [java.nio.charset StandardCharsets]
            [java.net URL URI]
-           [com.sun.nio.file SensitivityWatchEventModifier]))
+           [com.sun.nio.file SensitivityWatchEventModifier]
+
+           [org.lesscss LessCompiler]))
 
 ;; Compiles less file on every save. Most of this was extracted from
 ;; https://github.com/montoux/lein-less
@@ -32,7 +34,8 @@
        " --source-map-url=" "/css/app.css.map"
        " --source-map-less-inline"
        " --clean-css"
-       (format " --autoprefix=\"%s\"" browser-versions)))
+       ;;(format " --autoprefix=\"%s\"" browser-versions)
+       ))
 
 (defn watch-opts-cdm []
   (into-array WatchEvent$Kind [StandardWatchEventKinds/ENTRY_CREATE
@@ -46,6 +49,25 @@
   (str/replace s #"\n" "\\\\a "))
 
 (defn compile! [& {:keys [src dest]
+                   :or {src less-file dest output-file}}]
+  (let [options (lessc-options dest output-dir)
+        _ (log/info "less css options: " (pr-str options))
+        options-split (str/split options #" ")
+        _ (log/info "options-arr: " options-split)
+        
+        ^LessCompiler compiler (LessCompiler. options-split)
+
+        _ (log/info "src " src " dest " dest)
+        in-file (io/file src)
+        out-file (io/file dest)]
+    (try
+      (.compile compiler in-file out-file)
+      (catch Exception e
+        (spit dest (format "body:before { white-space: pre; content: \"%s\" }" (.toString e)))
+        (throw e)
+        ))))
+
+#_(defn compile! [& {:keys [src dest]
                    :or {src less-file dest output-file}}]
   (let [cmd (format "%s %s %s %s" lessc-path (lessc-options dest output-dir) src dest)
         res (shell/sh "bash" "-c" cmd)]
